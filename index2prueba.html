@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
+    
+    <!-- Incluir Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <!-- OpenLayers CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ol3/3.20.1/ol.css">
+    
+    <!-- OpenLayers JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ol3/3.20.1/ol.js"></script>
+    
+    <style>
+        html, body {
+            width: 100%;
+            height: 100%;
+            padding: 0;
+            margin: 0;
+            background-color: #ffffff;
+            font-family: 'Roboto', sans-serif; /* Aplicar la fuente Roboto */
+        }
+        #map {
+            width: 100%;
+            height: calc(100% - 50px); /* Altura del mapa ajustada para que no se superponga con la barra */
+        }
+        /* Estilo para la barra de navegación */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: rgba(20, 20, 139, 0.7); /* Color azul con transparencia */
+            color: white;
+            padding: 10px;
+            font-size: 20px;
+            font-weight: 500; /* Peso de fuente medio */
+        }
+        /* Estilo para el título en la parte izquierda */
+        .navbar .title {
+            margin-left: 10px;
+        }
+        /* Contenedor de las pestañas en la parte derecha */
+        .navbar .tabs {
+            display: flex;
+            gap: 15px;
+            margin-right: 10px;
+        }
+        /* Estilo para las pestañas */
+        .navbar .tabs a {
+            color: white;
+            text-decoration: none;
+            padding: 8px 16px;
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+            font-weight: 500; /* Peso de fuente medio */
+        }
+        .navbar .tabs a:hover {
+            background-color: rgba(255, 255, 255, 0.4);
+        }
+        /* Estilo para el contenido de la pestaña de prueba */
+        .test-content {
+            display: none;
+            padding: 20px;
+            background-color: #f0f0f0;
+            font-weight: 400; /* Peso de fuente regular */
+        }
+        .test-content h2 {
+            font-weight: 500;
+            margin-bottom: 10px;
+        }
+        .test-content p {
+            margin-bottom: 15px;
+        }
+    </style>
+    
+    <title>Resistencia Bacteriana a los Antibióticos</title>
+</head>
+<body>
+    <!-- Barra de navegación -->
+    <div class="navbar">
+        <div class="title">Resistencia Bacteriana en América Latina</div>
+        <div class="tabs">
+            <a href="#" id="map-tab">Mapa</a>
+            <a href="#" id="test-tab">Indicadores</a>
+        </div>
+    </div>
+
+    <!-- Contenedor del mapa -->
+    <div id="map"></div>
+
+    <!-- Contenido de la pestaña Indicadores (oculto por defecto) -->
+    <div class="test-content" id="test-content">
+        <h2>Indicadores</h2>
+        
+        <h3>Puntuación general de salud GHSI</h3>
+        <p>GHSI, por sus siglas en inglés, Global Health Security Index es un índice que evalúa la capacidad de los países para prevenir, detectar y responder a amenazas de salud pública como pandemias y otros eventos relacionados con la salud global. A mayor puntiación, lacapacidad del país ara enfrentar contingencias sanitarias tambipen es mayor.</p>
+        
+        <h3>Densidad de Población hab/km²</h3>
+        <p>Es una medida que indica el número promedio de personas que viven en una unidad de superficie específica.</p>
+        
+        <h3>Detección y reporte (AMR) de GHSI.</h3>
+        <p>Se refiere a la capacidad de un país para identificar, diagnosticar y reportar de manera eficiente y precisa las amenazas de salud pública, incluidas las infecciones causadas por patógenos resistentes a los antimicrobianos (AMR, por sus siglas en inglés, Antimicrobial Resistance).</p>
+
+        <h3>Plan nacional de dteccipon de patógenos Prioritarios (AMR)</h3>
+        <p>Hace alpusipon a si el país posee, posse con limitaciones o no un plan de detección de patógenos resistentes a los antimicrobianos.</p>
+        
+        <h3>Control antimicrobiano.</h3>
+        <p>Hace alpusión a si el país posee, posse con limitaciones o no un plan para en control de acceso a los antimicrobianos en su territorio.</p>
+
+        <h3>Prescripción requerida para antimicrobianos.</h3>
+        <p>Hace alusipon a si en el país se requiere una prescrición médica para obtener acceso a antimicrobianos</p>
+
+        <h3>Capacidad de laboratorios nacionales para detección de patógenos prioritarios.</h3>
+        <p>Evalúa la fortaleza y calidad de los sistemas de laboratorio, las cadenas de suministro de laboratorios, la vigilancia en tiempo real y las capacidades de reporte para epidemias de preocupación internacional.</p>
+
+        <h3>Bioseguridad</h3>
+        <p>Evalua en escala npumerica la forma en la que los países previenen la emergencia o liberación de patógenos que representan un riesgo extraordinario para la salud pública, conforme a la definición reconocida internacionalmente de una Emergencia de Salud Pública de Importancia Internacional (ESPII).</p>
+
+        <h3>Enferemdades Zoonoticas</h3>
+        <p>Este indicador mide la capacidad de un país para prevenir la aparición o liberación de patógenos, incluyendo aquellos que representan un riesgo extraordinario para la salud pública en el contexto de las enfermedades zoonóticas, es decir, enfermedades que pueden transmitirse de animales a humanos.</p>
+
+        <h3>Número de camas por cada 100000 hab.</h3>
+        <p>Es un indicador de el estado de la infrestructura sanitaria que determina los espacios disponibles para los enfermos durante una emergecia sanitaria.</p>
+
+        <h3>Número de doctores por cada 100000 hab.</h3>
+        <p> Este indicador mide la disponibilidad de médicos en relación con la población total, Una mayor densidad de médicos generalmente indica mejor acceso y capacidad de respuesta a las necesidades de salud de la población.</p>
+
+        <h3>IDH</h3>
+        <p>Este indicador compila la salud, educación y nivel de vida para evaluar el desarrollo socioeconómico de un país. Un IDH alto indica mejores condiciones de vida y acceso a recursos, mientras que un IDH bajo puede señalar carencias en áreas clave del desarrollo humano.</p>
+
+    </div>
+
+    <script>
+        // Inicializar el mapa de OpenLayers
+        var map = new ol.Map({
+            target: 'map',
+            layers: [
+                new ol.layer.Tile({
+                    source: new ol.source.OSM() // Mapa base OpenStreetMap
+                })
+            ],
+            view: new ol.View({
+                center: ol.proj.fromLonLat([-99.1332, 19.4326]), // Coordenadas de la Ciudad de México
+                zoom: 5
+            })
+        });
+
+        // Lógica para alternar entre el mapa y el texto de prueba
+        document.getElementById('map-tab').addEventListener('click', function() {
+            document.getElementById('map').style.display = 'block';
+            document.getElementById('test-content').style.display = 'none';
+        });
+
+        document.getElementById('test-tab').addEventListener('click', function() {
+            document.getElementById('map').style.display = 'none';
+            document.getElementById('test-content').style.display = 'block';
+        });
+    </script>
+</body>
+</html>
+
